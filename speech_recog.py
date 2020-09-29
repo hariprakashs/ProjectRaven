@@ -3,6 +3,7 @@ import pyttsx3 as p
 from selenium import webdriver
 class Raven():
     def __init__(self):
+        speak("Hi, I am Raven.")
         self.driver=webdriver.Ie(executable_path='C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe')
 
 
