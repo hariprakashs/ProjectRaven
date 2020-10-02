@@ -1,6 +1,8 @@
-import pyttsx3 as p
+import pyttsx3 
 
-e = p.init()
-
-e.say("Hello, Mani")
-e.runAndWait()
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+for voice in voices:
+   engine.setProperty('voice', voice.id)
+   engine.say('The quick brown fox jumped over the lazy dog.')
+engine.runAndWait()
