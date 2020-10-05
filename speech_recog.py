@@ -19,6 +19,7 @@ class Raven():
         if 'yes' in ip:
             return True
         else:
+            self.speak("Thank You")
             return False
 
     def greet(self):
@@ -43,8 +44,7 @@ class Raven():
     def process(self,p_input):
         self.query=p_input.lower()
 
-        if 'wikipedia' or 'information' in self.query:
-
+        if 'wikipedia' in self.query:
             self.speak("According to Wikipedia")
             self.get_info(self.query)
 
@@ -52,11 +52,11 @@ class Raven():
             self.speak("Opening Youtube")
             self.play(self.query)
 
-        elif 'open google' in self.query:
+        elif 'google' in self.query:
             self.speak("Opening Google")
             webbrowser.open("google.com")
 
-        elif 'open stackoverflow' in self.query:
+        elif 'stackoverflow' in self.query:
             self.speak("Opening Stack OverFlow")
             webbrowser.open("stackoverflow.com")
 
@@ -64,6 +64,66 @@ class Raven():
         elif 'the time' in self.query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             self.speak(f"Sir, the time is {strTime}")
+
+
+        elif 'how are you' in self.query:
+            self.speak("I am fine, Thank you")
+            self.speak("How are you, Sir")
+
+        elif 'fine' in self.query or "good" in self.query:
+            self.speak("It's good to know that your fine")
+
+
+        elif "what's your name" in self.query or "What is your name" in self.query:
+            self.speak("My friends call me Raven")
+
+        elif 'exit' in self.query:
+            self.speak("Thanks for giving me your time")
+            exit()
+
+        elif "who made you" in self.query or "who created you" in self.query:
+            self.speak("I have been created by Hari.")
+
+        elif 'joke' in self.query:
+            self.speak(pyjokes.get_joke())
+
+        elif "calculate" in self.query:
+
+            app_id = "Wolframalpha api id"
+            client = wolframalpha.Client(app_id)
+            indx = self.query.lower().split().index('calculate')
+            self.query = self.query.split()[indx + 1:]
+            res = client.self.query(' '.join(self.query))
+            answer = next(res.results).text
+            print("The answer is " + answer)
+            self.speak("The answer is " + answer)
+
+        elif "where is" in self.query:
+            self.query = self.query.replace("where is", "")
+            location = self.query
+            self.speak("User asked to Locate")
+            self.speak(location)
+            webbrowser.open("https://www.google.nl / maps / place/" + location + "")
+
+        elif 'news' in self.query:
+
+            try:
+                jsonObj = urlopen('''https://newsapi.org / v1 / articles?source = the-times-of-india&sortBy = top&apiKey =\\times of India Api key\\''')
+                data = json.load(jsonObj)
+                i = 1
+
+                self.speak('here are some top news from the times of india')
+                print('''=============== TIMES OF INDIA ============'''+ '\n')
+
+                for item in data['articles']:
+
+                    print(str(i) + '. ' + item['title'] + '\n')
+                    print(item['description'] + '\n')
+                    self.speak(str(i) + '. ' + item['title'] + '\n')
+                    i += 1
+            except Exception as e:
+
+                print(str(e))
 
 
     def get_info(self,query):
@@ -99,4 +159,3 @@ while True:
     check=one.looped()
     if not check:
         break
-        one.speak("Thank You")
