@@ -3,6 +3,9 @@ import pyttsx3 as p
 from selenium import webdriver
 import datetime
 import webbrowser
+from urllib.request import urlopen
+import json
+
 e = p.init('sapi5')
 voices = e.getProperty('voices')
 e.setProperty('voice', voices[0].id)
@@ -16,7 +19,7 @@ class Raven():
         self.speak("Anything else I can help you with Sir?")
         ip=self.recogonise()
         ip=ip.lower()
-        if 'yes' in ip:
+        if 'yes' in ip or 'sure' in ip:
             return True
         else:
             self.speak("Thank You")
@@ -77,7 +80,7 @@ class Raven():
         elif "what's your name" in self.query or "What is your name" in self.query:
             self.speak("My friends call me Raven")
 
-        elif 'exit' in self.query:
+        elif 'exit' in self.query or 'close' in self.query:
             self.speak("Thanks for giving me your time")
             exit()
 
@@ -108,7 +111,7 @@ class Raven():
         elif 'news' in self.query:
 
             try:
-                jsonObj = urlopen('''https://newsapi.org / v1 / articles?source = the-times-of-india&sortBy = top&apiKey =\\times of India Api key\\''')
+                jsonObj = urlopen('''https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=393f09a3d2624466873f4d7ce6697a01''')
                 data = json.load(jsonObj)
                 i = 1
 
@@ -148,6 +151,7 @@ class Raven():
             input = r.listen(source)
             try:
                 processed_text = r.recognize_google(input)
+                print(processed_text)
                 return processed_text
             except sr.UnknownValueError:
                 return "Raven cannot recognise your voice"
