@@ -5,6 +5,11 @@ import datetime
 import webbrowser
 from urllib.request import urlopen
 import json
+import pyjokes
+import turtle
+
+
+
 
 e = p.init('sapi5')
 voices = e.getProperty('voices')
@@ -12,9 +17,18 @@ e.setProperty('voice', voices[0].id)
 class Raven():
     def __init__(self):
         self.driver = webdriver.Chrome(executable_path='C:/Program Files/Google/Chrome/Application/chromedriver.exe')
+        self.window = turtle.Screen()
+        self.window.screensize(1980, 1080)
+        self.window.setup(width=1.0, height=1.0, startx=None, starty=None)
     def speak(self,ip):
+        turtle.title('Raven')
+        turtle.color('blue')
+        style = ('Turtle Racer', 30, 'italic')
+        turtle.write(ip, font=style, align='center')
+        turtle.hideturtle()
         e.say(ip)
         e.runAndWait()
+        turtle.resetscreen()
     def looped(self):
         self.speak("Anything else I can help you with Sir?")
         ip=self.recogonise()
@@ -84,11 +98,13 @@ class Raven():
             self.speak("Thanks for giving me your time")
             exit()
 
-        elif "who made you" in self.query or "who created you" in self.query:
+        elif "made you" in self.query or "who created you" in self.query:
             self.speak("I have been created by Hari.")
 
         elif 'joke' in self.query:
-            self.speak(pyjokes.get_joke())
+            x=pyjokes.get_joke()
+            print(x)
+            self.speak(x)
 
         elif "calculate" in self.query:
 
@@ -108,7 +124,7 @@ class Raven():
             self.speak(location)
             webbrowser.open("https://www.google.nl / maps / place/" + location + "")
 
-        elif 'news' in self.query:
+        elif 'news' in self.query or 'headlines'in self.query:
 
             try:
                 jsonObj = urlopen('''https://newsapi.org/v1/articles?source=the-times-of-india&sortBy=top&apiKey=393f09a3d2624466873f4d7ce6697a01''')
